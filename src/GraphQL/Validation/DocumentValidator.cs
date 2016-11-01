@@ -43,6 +43,8 @@ namespace GraphQL.Validation
 #if DEBUG
             visitors.Insert(1, new DebugNodeVisitor());
 #endif
+            visitors.Insert(2, new ComplexityVisitor(context));
+
 
             var basic = new BasicVisitor(visitors.ToArray());
 

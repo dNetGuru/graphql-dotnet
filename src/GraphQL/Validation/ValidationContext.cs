@@ -27,6 +27,8 @@ namespace GraphQL.Validation
 
         public TypeInfo TypeInfo { get; set; }
 
+        public Dictionary<INode, float> ComplexityMap { get; set; } = new Dictionary<INode, float>();
+
         public IEnumerable<ValidationError> Errors => _errors;
 
         public void ReportError(ValidationError error)
@@ -43,7 +45,7 @@ namespace GraphQL.Validation
             var listener = new EnterLeaveListener(_ =>
             {
                 _.Match<VariableReference>(
-                    varRef => usages.Add(new VariableUsage {Node = varRef, Type = info.GetInputType()})
+                    varRef => usages.Add(new VariableUsage { Node = varRef, Type = info.GetInputType() })
                 );
             });
 
@@ -84,7 +86,7 @@ namespace GraphQL.Validation
         {
             var spreads = new List<FragmentSpread>();
 
-            var setsToVisit = new Stack<SelectionSet>(new[] {node});
+            var setsToVisit = new Stack<SelectionSet>(new[] { node });
 
             while (setsToVisit.Any())
             {
@@ -118,7 +120,7 @@ namespace GraphQL.Validation
             }
 
             var fragments = new List<FragmentDefinition>();
-            var nodesToVisit = new Stack<SelectionSet>(new[] {operation.SelectionSet});
+            var nodesToVisit = new Stack<SelectionSet>(new[] { operation.SelectionSet });
             var collectedNames = new Dictionary<string, bool>();
 
             while (nodesToVisit.Any())
